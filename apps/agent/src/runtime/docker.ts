@@ -1,11 +1,12 @@
 import { Writable } from "node:stream";
+import type { Duplex } from "node:stream";
 import Dockerode from "dockerode";
 import { buildEnv, LineSplitter, type Runtime, type ServerConfig, type StatsSnapshot } from "./types.js";
 import type { RuntimeEvents } from "./types.js";
 
 interface DockerProc {
   containerId: string;
-  stream: NodeJS.Duplex | null;
+  stream: Duplex | null;
   splitter: LineSplitter;
   startedAt: number;
   intentionalStop: boolean;

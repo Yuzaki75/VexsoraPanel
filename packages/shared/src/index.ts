@@ -19,7 +19,7 @@ export interface PublicNode {
   scheme: string;
   port: number;
   publicHost: string | null;
-  online: boolean;
+  status: "online" | "offline" | "maintenance" | "unreachable";
   runtimeMode: string;
   agentVersion: string | null;
   lastSeenAt: string | null;
@@ -32,6 +32,7 @@ export interface PublicAllocation {
   ip: string;
   port: number;
   serverId: string | null;
+  notes?: string | null;
 }
 
 export interface PublicServer {
@@ -49,7 +50,10 @@ export interface PublicServer {
   memoryMb: number;
   diskMb: number;
   cpuPercent: number;
+  swapMb?: number;
   variables: Record<string, string>;
+  suspended?: boolean;
+  lastBackupAt?: string | null;
   createdAt: string;
 }
 
@@ -59,6 +63,56 @@ export interface PublicBackup {
   name: string;
   state: string;
   sizeBytes: number;
+  checksum?: string | null;
+  isLocked?: boolean;
+  createdAt: string;
+}
+
+export interface PublicSchedule {
+  id: string;
+  serverId: string;
+  name: string;
+  cron: string;
+  isActive: boolean;
+  onlyWhenOnline: boolean;
+  lastRunAt: string | null;
+  nextRunAt: string | null;
+  tasks?: PublicScheduleTask[];
+  createdAt: string;
+}
+
+export interface PublicScheduleTask {
+  id: string;
+  scheduleId: string;
+  sequenceId: number;
+  action: string;
+  payload: Record<string, unknown>;
+  continueOnFailure: boolean;
+  timeoutSeconds: number;
+}
+
+export interface PublicDatabase {
+  id: string;
+  serverId: string;
+  name: string;
+  databaseName: string;
+  remoteUser: string;
+  host: string;
+  port: number;
+  maxConnections: number | null;
+  createdAt: string;
+}
+
+export interface PublicActivityLog {
+  id: string;
+  userId: string | null;
+  username?: string | null;
+  serverId: string | null;
+  serverName?: string | null;
+  action: string;
+  metadata: Record<string, unknown>;
+  ipAddress: string | null;
+  userAgent: string | null;
   createdAt: string;
 }
 

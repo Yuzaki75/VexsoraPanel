@@ -143,6 +143,48 @@ export const FileDownloadQuery = z.object({ path: z.string().min(1) });
 
 // ---------- backups ----------
 export const BackupCreateInput = z.object({ name: z.string().max(64).optional() });
+export const BackupRestoreInput = z.object({ backupId: z.string().uuid() });
+
+// ---------- schedules ----------
+export const ScheduleCreateInput = z.object({
+  name: z.string().min(1).max(64),
+  cron: z.string().min(1).max(100), // Standard cron expression
+  isActive: z.boolean().default(true),
+  onlyWhenOnline: z.boolean().default(true),
+});
+
+export const ScheduleTaskCreateInput = z.object({
+  action: z.enum(["power_start", "power_stop", "power_restart", "power_kill", "backup", "command"]),
+  payload: z.record(z.unknown()).default({}),
+  continueOnFailure: z.boolean().default(false),
+  timeoutSeconds: z.number().int().min(1).max(3600).default(60),
+});
+
+// ---------- databases ----------
+export const DatabaseCreateInput = z.object({
+  name: z.string().min(1).max(64),
+  databaseName: z.string().min(1).max(64),
+  remoteUser: z.string().min(1).max(32),
+  password: z.string().min(8).max(64),
+  host: z.string().ip().default("127.0.0.1"),
+  port: z.coerce.number().int().min(1).max(65535).default(3306),
+  maxConnections: z.coerce.number().int().min(1).max(1000).default(10),
+});
+
+export const DatabaseUpdateInput = z.object({
+  name: z.string().min(1).max(64).optional(),
+  maxConnections: z.coerce.number().int().min(1).max(1000).optional(),
+  password: z.string().min(8).max(64).optional(),
+});
+
+// ---------- activity logs ----------
+export const ActivityLogFilterInput = z.object({
+  serverId: z.string().uuid().optional(),
+  userId: z.string().uuid().optional(),
+  action: z.string().optional(),
+  limit: z.coerce.number().int().min(1).max(100).default(50),
+  offset: z.coerce.number().int().min(0).default(0),
+});
 
 // ---------- webhooks ----------
 export const WEBHOOK_EVENTS = [

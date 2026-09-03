@@ -72,17 +72,17 @@ export function extractArchive(serverDir: string, relPath: string): void {
   if (!fs.existsSync(target)) throw new Error("Archive not found");
   const ext = path.extname(target).toLowerCase();
   const destDir = path.dirname(target);
-  return new Promise<void>((resolve, reject) => {
-    let cmd: string;
-    if (ext === ".zip") {
-      // PowerShell Expand-Archive works everywhere on Windows; unzip on POSIX.
-      cmd =
-        process.platform === "win32"
-          ? `powershell -NoProfile -Command "Expand-Archive -LiteralPath '${target}' -DestinationPath '${destDir}' -Force"`
-          : `unzip -o '${target}' -d '${destDir}'`;
-    } else if (ext === ".gz" || ext === ".tgz" || ext === ".tar") {
-      cmd = `tar -xf '${target}' -C '${destDir}'`;
-    } else {
+  
+  let cmd: string;
+  if (ext === ".zip") {
+    // PowerShell Expand-Archive works everywhere on Windows; unzip on POSIX.
+    cmd =
+      process.platform === "win32"
+        ? `powershell -NoProfile -Command "Expand-Archive -LiteralPath '${target}' -DestinationPath '${destDir}' -Force"`
+        : `unzip -o '${target}' -d '${destDir}'`;
+  } else if (ext === ".gz" || ext === ".tgz" || ext === ".tar") {
+    cmd = `tar -xf '${target}' -C '${destDir}'`;
+  } else {
       return reject(new Error(`Unsupported archive type: ${ext}`));
     }
     exec(cmd, { windowsHide: true, timeout: 120_000 }, (err) => (err ? reject(err) : resolve()));

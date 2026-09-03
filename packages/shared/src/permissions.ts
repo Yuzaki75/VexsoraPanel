@@ -13,8 +13,16 @@ export const SERVER_PERMISSIONS = [
   "backups.restore",
   "backups.delete",
   "backups.download",
+  "databases.view",
+  "databases.create",
+  "databases.delete",
+  "schedules.view",
+  "schedules.create",
+  "schedules.delete",
   "settings.rename",
   "settings.reinstall",
+  "settings.suspend",
+  "settings.delete",
   "subusers.manage",
   "activity.read",
 ] as const;
@@ -24,6 +32,7 @@ export type ServerPermission = (typeof SERVER_PERMISSIONS)[number];
 /** Permissions implied by broader ones — used to make checks intuitive. */
 export const PERMISSION_IMPLICATIONS: Partial<Record<ServerPermission, ServerPermission[]>> = {
   "settings.reinstall": ["power.start", "power.stop"],
+  "backups.restore": ["backups.download"],
 };
 
 export function hasPermission(granted: readonly string[], needed: ServerPermission): boolean {
