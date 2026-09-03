@@ -156,7 +156,6 @@ serversRouter.post("/", async (c) => {
         allocation: { ip: alloc.ip, port: alloc.port },
         startOnCreate: input.startOnCreate,
       }),
-      timeoutMs: 120_000,
     });
   } catch (err) {
     db.delete(servers).where(eq(servers.id, id)).run();
@@ -397,7 +396,6 @@ serversRouter.post("/:id/backups", async (c) => {
     await agentJson(node, `/api/v1/servers/${server.id}/backups`, {
       method: "POST",
       body: JSON.stringify({ backupId: id, name }),
-      timeoutMs: 300_000,
     });
   } catch (err) {
     getDb().update(backups).set({ state: "failed" }).where(eq(backups.id, id)).run();
@@ -455,9 +453,8 @@ serversRouter.delete("/:id/backups/:bid", (c) => {
 // ---------- subusers ----------
 function granterCanGrant(access: Access, requested: string[]): boolean {
   if (access.perms === "*") return true;
-  return requested.every((p) =>
-    (SERVER_PERMISSIONS as readonly string[]).includes(p) && hasPermission(access.perms, p as ServerPermission)
-  );
+  const granted = access.perms as readonly string[];
+  return requested.every((p) => SERVER_PERMISSIONS.includes(p as ServerPermission) && hasPermission(granted, p as ServerPermission));
 }
 
 serversRouter.get("/:id/subusers", (c) => {

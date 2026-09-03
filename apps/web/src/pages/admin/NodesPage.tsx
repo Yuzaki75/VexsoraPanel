@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import type { PublicNode } from "@strixmc/shared";
 import * as api from "../../lib/api";
 
-function NodeStatus({ online, lastSeenAt }: { online: boolean; lastSeenAt: string | null }) {
-  if (online) return <span className="badge badge-success">Online</span>;
+function NodeStatus({ status, lastSeenAt }: { status: string; lastSeenAt: string | null }) {
+  if (status === "online") return <span className="badge badge-success">Online</span>;
+  if (status === "maintenance") return <span className="badge badge-warning">Maintenance</span>;
+  if (status === "unreachable") return <span className="badge badge-error">Unreachable</span>;
   if (lastSeenAt) {
     const diff = Date.now() - new Date(lastSeenAt).getTime();
     const minutes = Math.floor(diff / 60000);
@@ -95,7 +97,7 @@ export default function NodesPage() {
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <NodeStatus online={node.online} lastSeenAt={node.lastSeenAt} />
+                      <NodeStatus status={node.status} lastSeenAt={node.lastSeenAt} />
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {node.runtimeMode}
