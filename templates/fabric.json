@@ -1,0 +1,23 @@
+{
+  "id": "fabric",
+  "name": "Fabric Minecraft",
+  "game": "minecraft",
+  "description": "Fabric loader Minecraft server — lightweight modding platform.",
+  "dockerImage": "eclipse-temurin:21-jre",
+  "installImage": "debian:bookworm-slim",
+  "installScript": "apt-get update -qq && apt-get install -y -qq curl jq unzip >/dev/null\nMC_VERSION=${MC_VERSION:-latest}\nINSTALLER=$(curl -s https://meta.fabricmc.net/v2/versions/installer | jq -r '.[0].version')\nif [ \"$MC_VERSION\" = \"latest\" ]; then\n  MC_VERSION=$(curl -s https://meta.fabricmc.net/v2/versions/game | jq -r '.[0].version')\nfi\nLOADER=$(curl -s https://meta.fabricmc.net/v2/versions/loader | jq -r '.[0].version')\necho \"Downloading Fabric $MC_VERSION loader $LOADER\"\ncurl -s -o fabric-installer.jar \"https://meta.fabricmc.net/v2/versions/loader/$MC_VERSION/$LOADER/$INSTALLER/1.0.3/server/jar\"\necho \"eula=true\" > eula.txt",
+  "startCommand": "java -Xms128M -Xmx${SERVER_MEMORY}M -jar fabric-installer.jar --nogui",
+  "stopCommand": "stop",
+  "stopTimeoutSec": 45,
+  "variables": [
+    { "key": "MC_VERSION", "label": "Minecraft version", "default": "latest", "required": false, "secret": false }
+  ],
+  "configs": [
+    {
+      "path": "server.properties",
+      "content": "server-ip=\nserver-port={{SERVER_PORT}}\nmotd=A StrixMC Fabric Server\nmax-players=20\nonline-mode=true\n"
+    }
+  ],
+  "minMemoryMb": 1024,
+  "minDiskMb": 2048
+}

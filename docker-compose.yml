@@ -1,0 +1,51 @@
+version: "3.8"
+
+services:
+  strix-panel:
+    build:
+      context: .
+      dockerfile: apps/panel/Dockerfile
+    container_name: strixmc_panel
+    ports:
+      - "8080:8080"
+    volumes:
+      - strix_panel_data:/app/data
+      - ./templates:/app/templates
+    environment:
+      - PORT=8080
+      - DATABASE_URL=file:/app/data/strix.db
+      - TEMPLATE_DIR=/app/templates
+    restart: unless-stopped
+
+  strix-web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    container_name: strixmc_web
+    ports:
+      - "4831:80" # Matching your example port mapping
+    depends_on:
+      - strix-panel
+    restart: unless-stopped
+
+  strix-agent:
+    build:
+      context: .
+      dockerfile: apps/agent/Dockerfile
+    container_name: strixmc_agent
+    ports:
+      - "8081:8081"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - strix_agent_data:/app/data
+      - strix_servers:/app/data/servers
+    environment:
+      - PORT=8081
+      - PANEL_URL=http://strix-panel:8080
+      - DATA_DIR=/app/data
+    restart: unless-stopped
+
+volumes:
+  strix_panel_data:
+  strix_agent_data:
+  strix_servers:

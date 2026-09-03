@@ -1,0 +1,18 @@
+{
+  "id": "terraria",
+  "name": "Terraria",
+  "game": "terraria",
+  "description": "Terraria dedicated server (TShock server binary).",
+  "dockerImage": "mono:latest",
+  "installImage": "debian:bookworm-slim",
+  "installScript": "apt-get update -qq && apt-get install -y -qq curl unzip >/dev/null\ncurl -sL -o tshock.zip $(curl -s https://api.github.com/repos/Pryaxis/TShock/releases/latest | jq -r '.assets[0].browser_download_url')\nunzip -o tshock.zip -d .\nrm -f tshock.zip",
+  "startCommand": "mono TerrariaServer.exe -port ${SERVER_PORT} -maxplayers ${MAX_PLAYERS:-16} -world world.wld",
+  "stopCommand": "exit",
+  "stopTimeoutSec": 30,
+  "variables": [
+    { "key": "MAX_PLAYERS", "label": "Max players", "default": "16", "required": false, "secret": false }
+  ],
+  "configs": [],
+  "minMemoryMb": 512,
+  "minDiskMb": 1024
+}

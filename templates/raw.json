@@ -1,0 +1,18 @@
+{
+  "id": "raw",
+  "name": "Raw Command",
+  "game": "generic",
+  "description": "Generic server: upload your files and set any start command. Useful for custom games, bots, or anything else.",
+  "dockerImage": "debian:bookworm-slim",
+  "installImage": "debian:bookworm-slim",
+  "installScript": "echo \"No install step. Upload files via the file manager.\"",
+  "startCommand": "{{START_COMMAND}}",
+  "stopCommand": "",
+  "stopTimeoutSec": 20,
+  "variables": [
+    { "key": "START_COMMAND", "label": "Start command", "default": "./run.sh", "required": true, "secret": false }
+  ],
+  "configs": [],
+  "minMemoryMb": 256,
+  "minDiskMb": 512
+}

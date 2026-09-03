@@ -1,0 +1,25 @@
+{
+  "name": "strixmc",
+  "private": true,
+  "version": "0.1.0",
+  "description": "StrixMC — lightweight multi-game server management panel",
+  "engines": { "node": ">=20" },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "better-sqlite3",
+      "esbuild",
+      "cpu-features",
+      "ssh2",
+      "protobufjs"
+    ]
+  },
+  "scripts": {
+    "dev": "pnpm -r --parallel run dev",
+    "dev:panel": "pnpm --filter @strixmc/panel dev",
+    "dev:agent": "pnpm --filter @strixmc/agent dev",
+    "dev:web": "pnpm --filter @strixmc/web dev",
+    "build": "pnpm -r run build",
+    "typecheck": "pnpm -r run typecheck",
+    "test": "pnpm -r run test"
+  }
+}

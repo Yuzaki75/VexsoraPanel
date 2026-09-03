@@ -1,0 +1,24 @@
+{
+  "id": "paper",
+  "name": "Paper Minecraft",
+  "game": "minecraft",
+  "description": "High-performance Minecraft server (PaperMC). Includes EULA handling and server.properties.",
+  "dockerImage": "eclipse-temurin:21-jre",
+  "installImage": "debian:bookworm-slim",
+  "installScript": "apt-get update -qq && apt-get install -y -qq curl jq >/dev/null\nMC_VERSION=${MC_VERSION:-latest}\nif [ \"$MC_VERSION\" = \"latest\" ]; then\n  MC_VERSION=$(curl -s https://api.papermc.io/v2/projects/paper | jq -r '.versions[-1]')\nfi\nBUILD=$(curl -s https://api.papermc.io/v2/projects/paper/versions/$MC_VERSION/builds | jq -r '.builds[-1].build')\necho \"Downloading Paper $MC_VERSION build $BUILD\"\ncurl -s -o paper.jar \"https://api.papermc.io/v2/projects/paper/versions/$MC_VERSION/builds/$BUILD/downloads/paper-$MC_VERSION-$BUILD.jar\"\necho \"eula=true\" > eula.txt",
+  "startCommand": "java -Xms128M -Xmx${SERVER_MEMORY}M -XX:+UseG1GC -jar paper.jar --nogui",
+  "stopCommand": "stop",
+  "stopTimeoutSec": 45,
+  "variables": [
+    { "key": "MC_VERSION", "label": "Minecraft version", "default": "latest", "required": false, "secret": false, "choices": ["latest", "1.21", "1.20.6", "1.20.4"] },
+    { "key": "MOTD", "label": "Message of the day", "default": "A StrixMC Server", "required": false, "secret": false }
+  ],
+  "configs": [
+    {
+      "path": "server.properties",
+      "content": "server-ip=\nserver-port={{SERVER_PORT}}\nmotd={{MOTD}}\nmax-players=20\nonline-mode=true\nview-distance=10\nenable-command-block=false\n"
+    }
+  ],
+  "minMemoryMb": 1024,
+  "minDiskMb": 2048
+}

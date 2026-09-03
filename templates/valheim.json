@@ -1,0 +1,22 @@
+{
+  "id": "valheim",
+  "name": "Valheim",
+  "game": "valheim",
+  "description": "Valheim dedicated server (SteamCMD). Requires Docker mode.",
+  "dockerImage": "cm2network/steamcmd:root",
+  "installImage": "debian:bookworm-slim",
+  "installScript": "echo \"Valheim will be downloaded by SteamCMD on first start.\"\necho \"Copy the world data via the file manager after first run.\"",
+  "startCommand": "cd /home/steam/valheim && ./valheim_server.x86_64 -name \"${SERVER_NAME}\" -port ${SERVER_PORT} -world \"${WORLD}\" -password \"${PASSWORD}\" -public ${PUBLIC:-0} -nographics -batchmode",
+  "stopCommand": "",
+  "stopSignal": "SIGTERM",
+  "stopTimeoutSec": 60,
+  "variables": [
+    { "key": "SERVER_NAME", "label": "Server name", "default": "My Valheim Server", "required": true, "secret": false },
+    { "key": "WORLD", "label": "World name", "default": "Dedicated", "required": true, "secret": false },
+    { "key": "PASSWORD", "label": "Server password (min 5 chars)", "default": "secret123", "required": true, "secret": true },
+    { "key": "PUBLIC", "label": "Public listing", "default": "0", "required": false, "secret": false, "choices": ["0", "1"] }
+  ],
+  "configs": [],
+  "minMemoryMb": 2048,
+  "minDiskMb": 6144
+}

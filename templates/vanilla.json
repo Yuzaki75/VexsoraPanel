@@ -1,0 +1,24 @@
+{
+  "id": "vanilla",
+  "name": "Vanilla Minecraft",
+  "game": "minecraft",
+  "description": "Official Mojang vanilla Minecraft server.",
+  "dockerImage": "eclipse-temurin:21-jre",
+  "installImage": "debian:bookworm-slim",
+  "installScript": "apt-get update -qq && apt-get install -y -qq curl jq >/dev/null\nMC_VERSION=${MC_VERSION:-latest}\nMANIFEST=$(curl -s https://launchermeta.mojang.com/mc/game/version_manifest_v2.json)\nif [ \"$MC_VERSION\" = \"latest\" ]; then\n  MC_VERSION=$(echo \"$MANIFEST\" | jq -r '.latest.release')\nfi\nURL=$(echo \"$MANIFEST\" | jq -r --arg v \"$MC_VERSION\" '.versions[] | select(.id==$v) | .url' | head -1)\nSERVER_JAR_URL=$(curl -s \"$URL\" | jq -r '.downloads.server.url')\necho \"Downloading Vanilla $MC_VERSION\"\ncurl -s -o server.jar \"$SERVER_JAR_URL\"\necho \"eula=true\" > eula.txt",
+  "startCommand": "java -Xms128M -Xmx${SERVER_MEMORY}M -jar server.jar --nogui",
+  "stopCommand": "stop",
+  "stopTimeoutSec": 45,
+  "variables": [
+    { "key": "MC_VERSION", "label": "Minecraft version", "default": "latest", "required": false, "secret": false },
+    { "key": "MOTD", "label": "Message of the day", "default": "A StrixMC Server", "required": false, "secret": false }
+  ],
+  "configs": [
+    {
+      "path": "server.properties",
+      "content": "server-ip=\nserver-port={{SERVER_PORT}}\nmotd={{MOTD}}\nmax-players=20\nonline-mode=true\n"
+    }
+  ],
+  "minMemoryMb": 1024,
+  "minDiskMb": 2048
+}
