@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import api from "../../lib/api";
+import * as api from "../../lib/api";
 
 interface Backup {
   id: string;

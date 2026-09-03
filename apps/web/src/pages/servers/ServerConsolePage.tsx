@@ -9,7 +9,6 @@ interface ConsoleLine {
 
 export default function ServerConsolePage() {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const [connected, setConnected] = useState(false);
   const [lines, setLines] = useState<ConsoleLine[]>([]);
   const [command, setCommand] = useState("");
@@ -129,7 +128,7 @@ export default function ServerConsolePage() {
   async function stopServer() {
     if (!confirm("Are you sure you want to stop this server?")) return;
     try {
-      await api.post(`/servers/${id}/stop`);
+      await api.post(`/servers/${id}/power`, { action: "stop" });
     } catch (err) {
       console.error("Failed to stop server:", err);
     }
@@ -138,7 +137,7 @@ export default function ServerConsolePage() {
   async function restartServer() {
     if (!confirm("Are you sure you want to restart this server?")) return;
     try {
-      await api.post(`/servers/${id}/restart`);
+      await api.post(`/servers/${id}/power`, { action: "restart" });
     } catch (err) {
       console.error("Failed to restart server:", err);
     }
@@ -147,7 +146,7 @@ export default function ServerConsolePage() {
   async function killServer() {
     if (!confirm("WARNING: This will forcefully kill the server. Unsaved progress will be lost!")) return;
     try {
-      await api.post(`/servers/${id}/kill`);
+      await api.post(`/servers/${id}/power`, { action: "kill" });
     } catch (err) {
       console.error("Failed to kill server:", err);
     }

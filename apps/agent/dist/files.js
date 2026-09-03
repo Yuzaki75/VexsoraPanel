@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { exec } from "node:child_process";
+import { execSync } from "node:child_process";
 /** Resolve a server-relative path, refusing traversal outside the server dir. */
 export function resolveSafe(serverDir, relPath) {
     const cleaned = relPath.replace(/^[/\\]+/, "").replace(/\.\.+/g, ".");
@@ -63,22 +63,25 @@ export function extractArchive(serverDir, relPath) {
         throw new Error("Archive not found");
     const ext = path.extname(target).toLowerCase();
     const destDir = path.dirname(target);
-    return new Promise((resolve, reject) => {
-        let cmd;
-        if (ext === ".zip") {
-            // PowerShell Expand-Archive works everywhere on Windows; unzip on POSIX.
-            cmd =
-                process.platform === "win32"
-                    ? `powershell -NoProfile -Command "Expand-Archive -LiteralPath '${target}' -DestinationPath '${destDir}' -Force"`
-                    : `unzip -o '${target}' -d '${destDir}'`;
-        }
-        else if (ext === ".gz" || ext === ".tgz" || ext === ".tar") {
-            cmd = `tar -xf '${target}' -C '${destDir}'`;
-        }
-        else {
-            return reject(new Error(`Unsupported archive type: ${ext}`));
-        }
-        exec(cmd, { windowsHide: true, timeout: 120_000 }, (err) => (err ? reject(err) : resolve()));
-    });
+    let cmd;
+    if (ext === ".zip") {
+        // PowerShell Expand-Archive works everywhere on Windows; unzip on POSIX.
+        cmd =
+            process.platform === "win32"
+                ? `powershell -NoProfile -Command "Expand-Archive -LiteralPath '${target}' -DestinationPath '${destDir}' -Force"`
+                : `unzip -o '${target}' -d '${destDir}'`;
+    }
+    else if (ext === ".gz" || ext === ".tgz" || ext === ".tar") {
+        cmd = `tar -xf '${target}' -C '${destDir}'`;
+    }
+    else {
+        throw new Error(`Unsupported archive type: ${ext}`);
+    }
+    try {
+        execSync(cmd, { stdio: "pipe", timeout: 120_000 });
+    }
+    catch (err) {
+        throw new Error(`Failed to extract archive: ${err.message}`);
+    }
 }
 //# sourceMappingURL=files.js.map
