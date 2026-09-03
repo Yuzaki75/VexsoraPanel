@@ -1,47 +1,80 @@
+```
 # Dependencies
 node_modules/
 .pnpm-store/
+.npm/
+.yarn/
 
 # Build outputs
 dist/
 build/
-*.tsbuildinfo
+.next/
+.nuxt/
+public/dist/
+output/
 
-# Environment
+# Runtime
 .env
 .env.local
-.env.*.local
-
-# Database
-*.db
-*.db-shm
-*.db-wal
+.env.*
+.env.local.*
 
 # Logs
-logs/
 *.log
 npm-debug.log*
-pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# OS
+# OS generated files
 .DS_Store
 Thumbs.db
+ehthumbs.db
+Icon?
+._*
 
-# IDE
+# Temporary files
+*.tmp
+*.temp
+*~
+.#*
+
+# IDE specific
 .vscode/
 .idea/
 *.swp
 *.swo
-*~
 
-# Factory/Droid
-.zcode/
+# Python (if present)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
 
-# Data directories
-data/
-servers/
-backups/
+# Coverage
+coverage/
+htmlcov/
+.coverage
 
-# Credentials
-credentials.json
-.strix.json
+# Database
+*.db
+*.db-journal
+
+# Process pid
+*.pid
+
+# Compiled binary
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Compressed
+*.zip
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.7z
+*.rar
+```

@@ -5,6 +5,7 @@ import RegisterPage from "./pages/auth/RegisterPage";
 import DashboardLayout from "./layouts/DashboardLayout";
 import DashboardPage from "./pages/DashboardPage";
 import ServersListPage from "./pages/servers/ServersListPage";
+import ServerOverviewPage from "./pages/servers/ServerOverviewPage";
 import ServerConsolePage from "./pages/servers/ServerConsolePage";
 import ServerFilesPage from "./pages/servers/ServerFilesPage";
 import ServerBackupsPage from "./pages/servers/ServerBackupsPage";
@@ -16,13 +17,13 @@ import ProfilePage from "./pages/ProfilePage";
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
-  if (loading) return <div className="flex items-center justify-center h-screen">Loading...</div>;
+  if (loading) return <div className="flex items-center justify-center h-screen text-gray-400">Loading...</div>;
   return user ? <>{children}</> : <Navigate to="/login" replace />;
 }
 
 function AdminRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
-  if (loading) return <div className="flex items-center justify-center h-screen">Loading...</div>;
+  if (loading) return <div className="flex items-center justify-center h-screen text-gray-400">Loading...</div>;
   if (!user) return <Navigate to="/login" replace />;
   if (user.role !== "admin") return <Navigate to="/" replace />;
   return <>{children}</>;
@@ -38,10 +39,18 @@ function App() {
         <Route path="/" element={<PrivateRoute><DashboardLayout /></PrivateRoute>}>
           <Route index element={<DashboardPage />} />
           <Route path="servers" element={<ServersListPage />} />
+          <Route path="servers/:id" element={<Navigate to="overview" replace />} />
+          <Route path="servers/:id/overview" element={<ServerOverviewPage />} />
           <Route path="servers/:id/console" element={<ServerConsolePage />} />
           <Route path="servers/:id/files" element={<ServerFilesPage />} />
+          <Route path="servers/:id/databases" element={<div className="card bg-neutral-900 border border-neutral-800 p-6"><h1 className="text-xl font-bold text-white mb-4">Databases</H1><p className="text-gray-400">Database management coming soon.</p></div>} />
           <Route path="servers/:id/backups" element={<ServerBackupsPage />} />
+          <Route path="servers/:id/schedules" element={<div className="card bg-neutral-900 border border-neutral-800 p-6"><h1 className="text-xl font-bold text-white mb-4">Schedules</H1><p className="text-gray-400">Schedule management coming soon.</p></div>} />
+          <Route path="servers/:id/users" element={<div className="card bg-neutral-900 border border-neutral-800 p-6"><h1 className="text-xl font-bold text-white mb-4">Subusers</H1><p className="text-gray-400">Subuser management coming soon.</p></div>} />
+          <Route path="servers/:id/network" element={<div className="card bg-neutral-900 border border-neutral-800 p-6"><h1 className="text-xl font-bold text-white mb-4">Network</H1><p className="text-gray-400">Network allocation management coming soon.</p></div>} />
+          <Route path="servers/:id/startup" element={<div className="card bg-neutral-900 border border-neutral-800 p-6"><h1 className="text-xl font-bold text-white mb-4">Startup</H1><p className="text-gray-400">Startup configuration coming soon.</p></div>} />
           <Route path="servers/:id/settings" element={<ServerSettingsPage />} />
+          <Route path="servers/:id/activity" element={<div className="card bg-neutral-900 border border-neutral-800 p-6"><h1 className="text-xl font-bold text-white mb-4">Activity</H1><p className="text-gray-400">Activity logs coming soon.</p></div>} />
           <Route path="profile" element={<ProfilePage />} />
           
           <Route path="admin/nodes" element={<AdminRoute><NodesPage /></AdminRoute>} />
