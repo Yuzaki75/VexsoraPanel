@@ -43,14 +43,14 @@ function App() {
           <Route path="servers/:id/overview" element={<ServerOverviewPage />} />
           <Route path="servers/:id/console" element={<ServerConsolePage />} />
           <Route path="servers/:id/files" element={<ServerFilesPage />} />
-          <Route path="servers/:id/databases" element={<div className="card bg-neutral-900 border border-neutral-800 p-6"><h1 className="text-xl font-bold text-white mb-4">Databases</H1><p className="text-gray-400">Database management coming soon.</p></div>} />
+          <Route path="servers/:id/databases" element={<div className="card bg-neutral-900 border border-neutral-800 p-6"><h1 className="text-xl font-bold text-white mb-4">Databases</h1><p className="text-gray-400">Database management coming soon.</p></div>} />
           <Route path="servers/:id/backups" element={<ServerBackupsPage />} />
-          <Route path="servers/:id/schedules" element={<div className="card bg-neutral-900 border border-neutral-800 p-6"><h1 className="text-xl font-bold text-white mb-4">Schedules</H1><p className="text-gray-400">Schedule management coming soon.</p></div>} />
-          <Route path="servers/:id/users" element={<div className="card bg-neutral-900 border border-neutral-800 p-6"><h1 className="text-xl font-bold text-white mb-4">Subusers</H1><p className="text-gray-400">Subuser management coming soon.</p></div>} />
-          <Route path="servers/:id/network" element={<div className="card bg-neutral-900 border border-neutral-800 p-6"><h1 className="text-xl font-bold text-white mb-4">Network</H1><p className="text-gray-400">Network allocation management coming soon.</p></div>} />
-          <Route path="servers/:id/startup" element={<div className="card bg-neutral-900 border border-neutral-800 p-6"><h1 className="text-xl font-bold text-white mb-4">Startup</H1><p className="text-gray-400">Startup configuration coming soon.</p></div>} />
+          <Route path="servers/:id/schedules" element={<div className="card bg-neutral-900 border border-neutral-800 p-6"><h1 className="text-xl font-bold text-white mb-4">Schedules</h1><p className="text-gray-400">Schedule management coming soon.</p></div>} />
+          <Route path="servers/:id/users" element={<div className="card bg-neutral-900 border border-neutral-800 p-6"><h1 className="text-xl font-bold text-white mb-4">Subusers</h1><p className="text-gray-400">Subuser management coming soon.</p></div>} />
+          <Route path="servers/:id/network" element={<div className="card bg-neutral-900 border border-neutral-800 p-6"><h1 className="text-xl font-bold text-white mb-4">Network</h1><p className="text-gray-400">Network allocation management coming soon.</p></div>} />
+          <Route path="servers/:id/startup" element={<div className="card bg-neutral-900 border border-neutral-800 p-6"><h1 className="text-xl font-bold text-white mb-4">Startup</h1><p className="text-gray-400">Startup configuration coming soon.</p></div>} />
           <Route path="servers/:id/settings" element={<ServerSettingsPage />} />
-          <Route path="servers/:id/activity" element={<div className="card bg-neutral-900 border border-neutral-800 p-6"><h1 className="text-xl font-bold text-white mb-4">Activity</H1><p className="text-gray-400">Activity logs coming soon.</p></div>} />
+          <Route path="servers/:id/activity" element={<div className="card bg-neutral-900 border border-neutral-800 p-6"><h1 className="text-xl font-bold text-white mb-4">Activity</h1><p className="text-gray-400">Activity logs coming soon.</p></div>} />
           <Route path="profile" element={<ProfilePage />} />
           
           <Route path="admin/nodes" element={<AdminRoute><NodesPage /></AdminRoute>} />

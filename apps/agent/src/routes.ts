@@ -115,7 +115,6 @@ export function createApp(manager: ServerManager, agentSecret: string): Hono<Age
     if (!state) return c.json({ error: "Not found" }, 404);
     const stats = await manager.stats(c.req.param("id"));
     return c.json({
-      status: state.status,
       running: manager.isRunning(c.req.param("id")),
       ...(stats ?? {
         cpuPercent: 0,

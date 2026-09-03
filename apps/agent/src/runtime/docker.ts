@@ -6,7 +6,7 @@ import type { RuntimeEvents } from "./types.js";
 
 interface DockerProc {
   containerId: string;
-  stream: Duplex | null;
+  stream: any;
   splitter: LineSplitter;
   startedAt: number;
   intentionalStop: boolean;
