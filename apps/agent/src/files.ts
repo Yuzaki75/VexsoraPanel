@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { exec } from "node:child_process";
+import { exec, execSync } from "node:child_process";
 
 /** Resolve a server-relative path, refusing traversal outside the server dir. */
 export function resolveSafe(serverDir: string, relPath: string): string {
@@ -83,8 +83,12 @@ export function extractArchive(serverDir: string, relPath: string): void {
   } else if (ext === ".gz" || ext === ".tgz" || ext === ".tar") {
     cmd = `tar -xf '${target}' -C '${destDir}'`;
   } else {
-      return reject(new Error(`Unsupported archive type: ${ext}`));
-    }
-    exec(cmd, { windowsHide: true, timeout: 120_000 }, (err) => (err ? reject(err) : resolve()));
-  }) as unknown as Promise<void>;
+    throw new Error(`Unsupported archive type: ${ext}`);
+  }
+  
+  try {
+    execSync(cmd, { stdio: "pipe", timeout: 120_000 });
+  } catch (err) {
+    throw new Error(`Failed to extract archive: ${(err as Error).message}`);
+  }
 }

@@ -1,23 +1,16 @@
 ```
-# Dependencies
-node_modules/
-.pnpm-store/
-.npm/
-.yarn/
-
-# Build outputs
+# Build artifacts
 dist/
 build/
-.next/
-.nuxt/
-public/dist/
-output/
+target/
 
-# Runtime
-.env
-.env.local
-.env.*
-.env.local.*
+# Dependencies
+node_modules/
+vendor/
+.yarn/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Logs
 *.log
@@ -25,56 +18,32 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# OS generated files
-.DS_Store
-Thumbs.db
-ehthumbs.db
-Icon?
-._*
+# Environment variables
+.env
+.env.local
+.env.*
+!.env.example
 
-# Temporary files
-*.tmp
-*.temp
-*~
-.#*
-
-# IDE specific
+# IDE files
 .vscode/
 .idea/
 *.swp
 *.swo
+*~
 
-# Python (if present)
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-*.so
-
-# Coverage
-coverage/
-htmlcov/
-.coverage
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
 # Database
 *.db
 *.db-journal
 
-# Process pid
-*.pid
-
-# Compiled binary
-*.exe
-*.dll
-*.so
-*.dylib
-
-# Compressed
-*.zip
-*.tar.gz
-*.tar.bz2
-*.tar.xz
-*.7z
-*.rar
+# Runtime
+*.js.map
 ```
